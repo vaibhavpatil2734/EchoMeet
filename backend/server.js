@@ -11,10 +11,10 @@ const server = createServer(app);
 
 const allowedOrigins = [
   "https://echomeet1.netlify.app", // ✅ Netlify frontend
-  "http://localhost:3000", // ✅ Local development
+  "http://localhost:3000", // ✅ Local testing
 ];
 
-// CORS configuration
+// CORS configuration for Express (REST API)
 app.use(
   cors({
     origin: allowedOrigins,
@@ -23,15 +23,16 @@ app.use(
   })
 );
 
-// Socket.io configuration
+app.use(express.json());
+
+// Socket.io configuration - Explicitly allow CORS
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
-
-app.use(express.json());
 
 // Database Connection
 connectDb();
