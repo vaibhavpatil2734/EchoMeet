@@ -1,0 +1,56 @@
+.video-call-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #121212;
+    color: white;
+}
+
+.call-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.video-container {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    height: 70vh;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: black;
+}
+
+.remote-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.local-video {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    border: 2px solid white;
+    border-radius: 10px;
+    background: black;
+}
+
+.call-controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.call-controls button {
+    font-size: 16px;
+    padding: 10px 20px;
+}
