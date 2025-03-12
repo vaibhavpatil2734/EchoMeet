@@ -8,15 +8,27 @@ const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server, { cors: { origin: "*" } });
+
+// Allow CORS for both Netlify frontend and local development
+const allowedOrigins = [
+  "https://echomeet1.netlify.app",
+  "http://localhost:3000"
+];
 
 app.use(
-    cors({
-      origin: "https://echomeet1.netlify.app", // Update with your Netlify URL
-      methods: "GET,POST,PUT,DELETE",
-      credentials: true, // Allows cookies and authentication headers
-    })
-  );
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true, // Allows cookies and authentication headers
+  })
+);
+
 app.use(express.json());
 
 // Database Connection
@@ -26,31 +38,39 @@ connectDb();
 app.use("/api/auth", authRoutes);
 
 // WebRTC Signaling with Socket.io
+const io = new Server(server, {
+  cors: {
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
+
 io.on("connection", (socket) => {
-    console.log("User connected:", socket.id);
+  console.log("User connected:", socket.id);
 
-    socket.on("join-room", ({ callId }) => {
-        socket.join(callId);
-        console.log(`User joined room: ${callId}`);
-    });
+  socket.on("join-room", ({ callId }) => {
+    socket.join(callId);
+    console.log(`User joined room: ${callId}`);
+  });
 
-    socket.on("offer", ({ offer, callId }) => {
-        socket.to(callId).emit("offer", { offer, from: socket.id });
-    });
+  socket.on("offer", ({ offer, callId }) => {
+    socket.to(callId).emit("offer", { offer, from: socket.id });
+  });
 
-    socket.on("answer", ({ answer, to }) => {
-        socket.to(to).emit("answer", { answer });
-    });
+  socket.on("answer", ({ answer, to }) => {
+    socket.to(to).emit("answer", { answer });
+  });
 
-    socket.on("candidate", ({ candidate, to }) => {
-        socket.to(to).emit("candidate", { candidate });
-    });
+  socket.on("candidate", ({ candidate, to }) => {
+    socket.to(to).emit("candidate", { candidate });
+  });
 
-    socket.on("disconnect", () => {
-        console.log("User disconnected:", socket.id);
-    });
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
 });
 
 // Start Server
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
