@@ -10,7 +10,7 @@ const app = express();
 const server = createServer(app);
 
 const allowedOrigins = [
-  "https://echomeet1.netlify.app", // ✅ Netlify frontend
+  "https://67d1dd540184e71d3a93601d--echomeet1.netlify.app", // ✅ Netlify frontend
   "http://localhost:3000", // ✅ Local testing
 ];
 
