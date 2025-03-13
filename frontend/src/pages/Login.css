@@ -1,0 +1,42 @@
+/* GitHub Dark-Themed Login */
+.login-container {
+    height: 100vh;
+    background-color: #0d1117; /* GitHub dark background */
+    color: white;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 400px;
+    background-color: #161b22; /* Darker GitHub style box */
+    border: 1px solid #30363d;
+}
+
+.form-control {
+    background-color: #21262d; /* Dark input fields */
+    color: white;
+    border: 1px solid #30363d;
+}
+
+.form-control:focus {
+    background-color: #21262d;
+    border-color: #58a6ff;
+    box-shadow: none;
+}
+
+.btn-primary {
+    background-color: #862323; /* GitHub green button */
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #502ea0;
+}
+
+.text-info {
+    color: #ffffff !important;
+}
+
+.text-info:hover {
+    text-decoration: underline;
+}

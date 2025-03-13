@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Login.css"; // Importing custom styles
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -7,6 +8,11 @@ function Login() {
     const navigate = useNavigate();
 
     const handleLogin = async () => {
+        if (!email || !password) {
+            alert("Please enter both email and password.");
+            return;
+        }
+
         const response = await fetch("https://echomeet-5q04.onrender.com/api/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -23,11 +29,45 @@ function Login() {
     };
 
     return (
-        <div>
-            <h2>Login</h2>
-            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <button onClick={handleLogin}>Login</button>
+        <div className="login-container d-flex flex-column align-items-center justify-content-center">
+            <div className="login-box shadow-lg p-4 rounded">
+                <h2 className="text-center mb-4">Sign in to Your Account</h2>
+
+                <div className="mb-3">
+                    <label className="form-label">Email address</label>
+                    <input 
+                        type="email" 
+                        className="form-control" 
+                        placeholder="Enter your email" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+
+                <div className="mb-3">
+                    <label className="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        className="form-control" 
+                        placeholder="Enter your password" 
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+
+                <button 
+                    onClick={handleLogin} 
+                    className="btn btn-primary w-100"
+                >
+                    Sign in
+                </button>
+
+            
+            </div>
+
+            <p className="text-white mt-3">
+                New here? <a href="/Regiser" className="text-info">Create an account</a>
+            </p>
         </div>
     );
 }

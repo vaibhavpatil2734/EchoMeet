@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Home.css"; // Import the CSS file
+import Navbar from "./Navbar";
 
 function Home() {
     const [callId, setCallId] = useState("");
@@ -16,10 +18,21 @@ function Home() {
 
     return (
         <div>
-            <h2>Video Call Dashboard</h2>
-            <button onClick={startCall}>Start New Call</button>
-            <input type="text" placeholder="Enter Call ID" value={callId} onChange={(e) => setCallId(e.target.value)} />
-            <button onClick={joinCall}>Join Call</button>
+            <Navbar/>
+            <div className="home-container">
+            <div className="home-box">
+                <h2>🎥 Video Call Dashboard</h2>
+                <button className="btn-primary start-btn" onClick={startCall}>Start New Call</button>
+                <input 
+                    type="text" 
+                    placeholder="Enter Call ID" 
+                    value={callId} 
+                    onChange={(e) => setCallId(e.target.value)} 
+                    className="form-control call-input"
+                />
+                <button className="btn-secondary join-btn" onClick={joinCall}>Join Call</button>
+            </div>
+        </div>
         </div>
     );
 }

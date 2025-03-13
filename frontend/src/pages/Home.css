@@ -1,0 +1,90 @@
+/* 🌙 GitHub Dark-Themed Home Page */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* 📺 Full Screen Background */
+.home-container {
+    height: 100vh;
+    background-color: #0d1117; /* GitHub dark background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 📦 Card Box */
+.home-box {
+    width: 100%;
+    max-width: 450px;
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 🎭 Title */
+h2 {
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+/* 📝 Input Field */
+.call-input {
+    background-color: #21262d;
+    color: white;
+    border: 1px solid #30363d;
+    padding: 10px;
+    width: 100%;
+    margin: 15px 0;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.call-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.call-input:focus {
+    border-color: #58a6ff;
+    box-shadow: none;
+}
+
+/* 🔵 Start Call Button */
+.start-btn {
+    background-color: #238636;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    color: white;
+    transition: 0.3s;
+}
+
+.start-btn:hover {
+    background-color: #2ea043;
+    transform: scale(1.05);
+}
+
+/* 🔴 Join Call Button */
+.join-btn {
+    background-color: #862323;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    color: white;
+    transition: 0.3s;
+}
+
+.join-btn:hover {
+    background-color: #502ea0;
+    transform: scale(1.05);
+}

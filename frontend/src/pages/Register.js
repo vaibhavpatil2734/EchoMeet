@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./Register.css"; // Importing custom styles
 
 const Register = () => {
     const [email, setEmail] = useState("");
@@ -28,34 +29,58 @@ const Register = () => {
     };
 
     return (
-        <div className="register-container">
-            <h2>Register</h2>
-            {error && <p className="error">{error}</p>}
-            <form onSubmit={handleRegister}>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Confirm Password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                />
-                <button type="submit">Register</button>
-            </form>
-            <p>Already have an account? <a href="/">Login</a></p>
+        <div className="register-container d-flex flex-column align-items-center justify-content-center">
+            <div className="register-box shadow-lg p-4 rounded">
+                <h2 className="text-center mb-4">Create an Account</h2>
+
+                {error && <p className="error-message">{error}</p>}
+
+                <form onSubmit={handleRegister}>
+                    <div className="mb-3">
+                        <label className="form-label">Email</label>
+                        <input
+                            type="email"
+                            className="form-control"
+                            placeholder="Enter email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div className="mb-3">
+                        <label className="form-label">Password</label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            placeholder="Enter password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div className="mb-3">
+                        <label className="form-label">Confirm Password</label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            placeholder="Re-enter password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <button type="submit" className="btn btn-register w-100">
+                        Sign Up
+                    </button>
+                </form>
+
+                <p className="text-center mt-3">
+                    Already have an account? <a href="/" className="text-login">Login</a>
+                </p>
+            </div>
         </div>
     );
 };
