@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { FaCopy, FaPhoneSlash } from "react-icons/fa";
 import "./VideoCall.css"; // Import custom styles
 
 const socket = io("https://echomeet-5q04.onrender.com");
 
 function VideoCall() {
     const { callId } = useParams();
+    const navigate = useNavigate();
     const localVideoRef = useRef(null);
     const remoteVideoRef = useRef(null);
     const [peerConnection, setPeerConnection] = useState(null);
@@ -27,10 +29,7 @@ function VideoCall() {
         socket.emit("join-room", { callId });
 
         socket.on("offer", async (data) => {
-            if (!pc || pc.signalingState === "closed") {
-                console.warn("PeerConnection is closed. Ignoring offer.");
-                return;
-            }
+            if (!pc || pc.signalingState === "closed") return;
             try {
                 await pc.setRemoteDescription(new RTCSessionDescription(data.offer));
                 const answer = await pc.createAnswer();
@@ -42,10 +41,7 @@ function VideoCall() {
         });
 
         socket.on("answer", async (data) => {
-            if (!pc || pc.signalingState === "closed") {
-                console.warn("PeerConnection is closed. Ignoring answer.");
-                return;
-            }
+            if (!pc || pc.signalingState === "closed") return;
             try {
                 await pc.setRemoteDescription(new RTCSessionDescription(data.answer));
             } catch (error) {
@@ -54,10 +50,7 @@ function VideoCall() {
         });
 
         socket.on("candidate", async (data) => {
-            if (!pc || pc.signalingState === "closed") {
-                console.warn("PeerConnection is closed. Ignoring candidate.");
-                return;
-            }
+            if (!pc || pc.signalingState === "closed") return;
             try {
                 await pc.addIceCandidate(new RTCIceCandidate(data.candidate));
             } catch (error) {
@@ -79,6 +72,9 @@ function VideoCall() {
 
         setPeerConnection(pc);
 
+        // Auto start call
+        startCall(pc);
+
         return () => {
             if (pc.signalingState !== "closed") {
                 pc.close();
@@ -90,36 +86,50 @@ function VideoCall() {
         };
     }, [callId]);
 
-    const startCall = async () => {
-        if (!peerConnection || peerConnection.signalingState === "closed") {
-            console.warn("Cannot start call: PeerConnection is closed.");
-            return;
-        }
+    const startCall = async (pc) => {
+        if (!pc || pc.signalingState === "closed") return;
         try {
-            const offer = await peerConnection.createOffer();
-            await peerConnection.setLocalDescription(offer);
+            const offer = await pc.createOffer();
+            await pc.setLocalDescription(offer);
             socket.emit("offer", { offer, callId });
         } catch (error) {
             console.error("Error starting call:", error);
         }
     };
 
+    const endCall = () => {
+        if (peerConnection) {
+            peerConnection.close();
+        }
+        socket.emit("end-call", { callId });
+        navigate("/home"); // Navigate to home after call ends
+    };
+
+    const copyCallId = () => {
+        navigator.clipboard.writeText(callId);
+        alert("Call ID copied!");
+    };
+
     return (
         <div className="video-call-container">
-            <h2 className="call-header">Video Call - ID: {callId}</h2>
+            {/* Call ID Display */}
+            <div className="call-id">
+                <span>Call ID: {callId}</span>
+                <button onClick={copyCallId} className="copy-btn">
+                    <FaCopy />
+                </button>
+            </div>
 
             <div className="video-container">
-                {/* Remote Video (Full Screen) */}
                 <video ref={remoteVideoRef} className="remote-video" autoPlay playsInline />
-
-                {/* Local Video (Small, Bottom Right) */}
                 <video ref={localVideoRef} className="local-video" autoPlay playsInline muted />
             </div>
 
             {/* Call Control Buttons */}
             <div className="call-controls">
-                <button className="btn btn-danger">End Call</button>
-                <button className="btn btn-primary" onClick={startCall}>Start Call</button>
+                <button className="btn btn-danger end-call" onClick={endCall}>
+                    <FaPhoneSlash /> End Call
+                </button>
             </div>
         </div>
     );
