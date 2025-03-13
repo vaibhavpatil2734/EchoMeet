@@ -17,14 +17,25 @@ function VideoCall() {
 
     const startCall = useCallback(async (pc) => {
         if (!pc || pc.signalingState === "closed") return;
+    
         try {
             const offer = await pc.createOffer();
             await pc.setLocalDescription(offer);
+    
+            // Wait for ICE candidates before sending the offer
+            pc.onicecandidate = (event) => {
+                if (event.candidate) {
+                    socket.emit("candidate", { candidate: event.candidate, callId });
+                }
+            };
+    
             socket.emit("offer", { offer, callId });
+    
         } catch (error) {
             console.error("Error starting call:", error);
         }
     }, [callId]);
+    
 
     useEffect(() => {
         const pc = new RTCPeerConnection();
