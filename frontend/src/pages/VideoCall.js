@@ -16,14 +16,13 @@ function VideoCall() {
     const [copied, setCopied] = useState(false);
     const [status, setStatus] = useState("Waiting to start...");
     const [isCallStarted, setIsCallStarted] = useState(false);
-    const [localStream, setLocalStream] = useState(null);
 
     const setupPeerConnection = useCallback(async () => {
         const pc = new RTCPeerConnection();
 
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            setLocalStream(stream);
+
             if (localVideoRef.current) {
                 localVideoRef.current.srcObject = stream;
             }
