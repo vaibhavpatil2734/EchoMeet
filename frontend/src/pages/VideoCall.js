@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { FaCopy, FaPhoneSlash } from "react-icons/fa";
-import "./VideoCall.css"; // Import custom styles
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./VideoCall.css"; // Custom CSS file
 
 const socket = io("https://echomeet-5q04.onrender.com");
 
@@ -13,6 +13,18 @@ function VideoCall() {
     const localVideoRef = useRef(null);
     const remoteVideoRef = useRef(null);
     const [peerConnection, setPeerConnection] = useState(null);
+    const [copied, setCopied] = useState(false);
+
+    const startCall = useCallback(async (pc) => {
+        if (!pc || pc.signalingState === "closed") return;
+        try {
+            const offer = await pc.createOffer();
+            await pc.setLocalDescription(offer);
+            socket.emit("offer", { offer, callId });
+        } catch (error) {
+            console.error("Error starting call:", error);
+        }
+    }, [callId]);
 
     useEffect(() => {
         const pc = new RTCPeerConnection();
@@ -71,8 +83,6 @@ function VideoCall() {
         };
 
         setPeerConnection(pc);
-
-        // Auto start call
         startCall(pc);
 
         return () => {
@@ -84,48 +94,40 @@ function VideoCall() {
             socket.off("answer");
             socket.off("candidate");
         };
-    }, [callId]);
-
-    const startCall = async (pc) => {
-        if (!pc || pc.signalingState === "closed") return;
-        try {
-            const offer = await pc.createOffer();
-            await pc.setLocalDescription(offer);
-            socket.emit("offer", { offer, callId });
-        } catch (error) {
-            console.error("Error starting call:", error);
-        }
-    };
+    }, [callId, startCall]);
 
     const endCall = () => {
         if (peerConnection) {
             peerConnection.close();
         }
         socket.emit("end-call", { callId });
-        navigate("/home"); // Navigate to home after call ends
+        navigate("/home");
     };
 
     const copyCallId = () => {
         navigator.clipboard.writeText(callId);
-        alert("Call ID copied!");
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
     };
 
     return (
         <div className="video-call-container">
-            {/* Call ID Display */}
+            {/* Floating Call ID Display - Moved to Top-Right Corner */}
             <div className="call-id">
                 <span>Call ID: {callId}</span>
-                <button onClick={copyCallId} className="copy-btn">
+                <button onClick={copyCallId} className="copy-btn" title="Copy Call ID">
                     <FaCopy />
                 </button>
+                {copied && <span className="copied-tooltip">Copied!</span>}
             </div>
 
+            {/* Video Feeds */}
             <div className="video-container">
                 <video ref={remoteVideoRef} className="remote-video" autoPlay playsInline />
                 <video ref={localVideoRef} className="local-video" autoPlay playsInline muted />
             </div>
 
-            {/* Call Control Buttons */}
+            {/* Call Controls - Moved Below Video Box */}
             <div className="call-controls">
                 <button className="btn btn-danger end-call" onClick={endCall}>
                     <FaPhoneSlash /> End Call

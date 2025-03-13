@@ -10,32 +10,39 @@
     overflow: hidden;
 }
 
-/* Call ID */
+/* Call ID - Fixed to Top-Right Corner */
 .call-id {
     position: absolute;
     top: 10px;
     right: 15px;
     color: white;
-    font-size: 12px;
+    font-size: 14px;
     background: rgba(0, 0, 0, 0.6);
-    padding: 5px 10px;
+    padding: 5px 15px;
     border-radius: 10px;
     display: flex;
     align-items: center;
+    gap: 8px;
 }
 
-.call-id button {
+.call-id .copy-btn {
     background: none;
     border: none;
     color: white;
     cursor: pointer;
+    font-size: 16px;
+}
+
+.copied-tooltip {
     margin-left: 5px;
+    color: #00ff00;
+    font-size: 12px;
 }
 
 /* Video Container */
 .video-container {
     width: 90%;
-    height: 80vh;
+    height: 75vh; /* Adjusted height to prevent overlap */
     position: relative;
     display: flex;
     justify-content: center;
@@ -46,6 +53,11 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
+@media(max-width :768px){
+    .video-container{
+        margin-top: 8%;
+    }
+}
 /* Remote Video */
 .remote-video {
     width: 100%;
@@ -66,10 +78,10 @@
     border: 2px solid white;
 }
 
-/* Call Controls */
+/* Call Controls - Moved Below Video Box */
 .call-controls {
-    position: absolute;
-    bottom: 20px;
+    position: relative;
+    margin-top: 20px; /* Ensures no overlap */
     display: flex;
     justify-content: center;
     gap: 15px;
