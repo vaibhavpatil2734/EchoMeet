@@ -42,7 +42,7 @@
 /* Video Container */
 .video-container {
     width: 90%;
-    height: 75vh; /* Adjusted height to prevent overlap */
+    height: 75vh; 
     position: relative;
     display: flex;
     justify-content: center;
@@ -53,11 +53,12 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-@media(max-width :768px){
-    .video-container{
+@media(max-width: 768px) {
+    .video-container {
         margin-top: 8%;
     }
 }
+
 /* Remote Video */
 .remote-video {
     width: 100%;
@@ -78,10 +79,10 @@
     border: 2px solid white;
 }
 
-/* Call Controls - Moved Below Video Box */
+/* Call Controls */
 .call-controls {
     position: relative;
-    margin-top: 20px; /* Ensures no overlap */
+    margin-top: 20px;
     display: flex;
     justify-content: center;
     gap: 15px;

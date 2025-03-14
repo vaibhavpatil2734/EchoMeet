@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Register.css"; // Importing custom styles
+import Navbar from "./Navbar";
 
 const Register = () => {
     const [email, setEmail] = useState("");
@@ -29,7 +30,9 @@ const Register = () => {
     };
 
     return (
-        <div className="register-container d-flex flex-column align-items-center justify-content-center">
+        <div>
+            <Navbar/>
+            <div className="register-container d-flex flex-column align-items-center justify-content-center">
             <div className="register-box shadow-lg p-4 rounded">
                 <h2 className="text-center mb-4">Create an Account</h2>
 
@@ -78,9 +81,10 @@ const Register = () => {
                 </form>
 
                 <p className="text-center mt-3">
-                    Already have an account? <a href="/" className="text-login">Login</a>
+                    Already have an account? <a href="/" className="text-login">Sign in</a>
                 </p>
             </div>
+        </div>
         </div>
     );
 };

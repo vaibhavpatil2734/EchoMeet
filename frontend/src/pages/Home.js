@@ -21,8 +21,9 @@ function Home() {
             <Navbar/>
             <div className="home-container">
             <div className="home-box">
-                <h2>🎥 Video Call Dashboard</h2>
+                <h2 className="h2one">🎥 Video Call Dashboard</h2>
                 <button className="btn-primary start-btn" onClick={startCall}>Start New Call</button>
+                <h5 className="mt-2 text-primary">Enter Call ID To Join Call</h5>
                 <input 
                     type="text" 
                     placeholder="Enter Call ID" 

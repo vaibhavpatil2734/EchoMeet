@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css"; // Importing custom styles
+import Navbar from "./Navbar";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -29,7 +30,9 @@ function Login() {
     };
 
     return (
-        <div className="login-container d-flex flex-column align-items-center justify-content-center">
+        <div>
+            <Navbar/>
+            <div className="login-container d-flex flex-column align-items-center justify-content-center">
             <div className="login-box shadow-lg p-4 rounded">
                 <h2 className="text-center mb-4">Sign in to Your Account</h2>
 
@@ -68,6 +71,7 @@ function Login() {
             <p className="text-white mt-3">
                 New here? <a href="/Regiser" className="text-info">Create an account</a>
             </p>
+        </div>
         </div>
     );
 }
