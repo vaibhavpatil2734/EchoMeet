@@ -10,7 +10,7 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/" element={<Login />} />
-                <Route path="/Regiser" element={<Register/>}/>
+                <Route path="/Register" element={<Register/>}/>
                 <Route path="/home" element={<Home />} />
                 <Route path="/call/:callId" element={<VideoCall />} />
             </Routes>

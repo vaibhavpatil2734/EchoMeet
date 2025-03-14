@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css"; // Importing custom styles
 import Navbar from "./Navbar";
+import { Link } from "react-router-dom";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -69,7 +70,7 @@ function Login() {
             </div>
 
             <p className="text-white mt-3">
-                New here? <a href="/Regiser" className="text-info">Create an account</a>
+                New here? <Link to="/Register" className="text-info">Create an account</Link>
             </p>
         </div>
         </div>

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Register.css"; // Importing custom styles
 import Navbar from "./Navbar";
+import { Link } from "react-router-dom";
 
 const Register = () => {
     const [email, setEmail] = useState("");
@@ -23,7 +24,7 @@ const Register = () => {
         try {
             const response = await axios.post("https://echomeet-5q04.onrender.com/api/auth/register", { email, password });
             alert(response.data.message);
-            navigate("/login");
+            navigate("/");
         } catch (err) {
             setError(err.response?.data?.error || "Something went wrong");
         }
@@ -75,13 +76,13 @@ const Register = () => {
                         />
                     </div>
 
-                    <button type="submit" className="btn btn-register w-100">
+                    <button type="submit" className="btn btn-register w-100" >
                         Sign Up
                     </button>
                 </form>
 
                 <p className="text-center mt-3">
-                    Already have an account? <a href="/" className="text-login">Sign in</a>
+                    Already have an account? <Link to="/" className="text-info">Sign in</Link>
                 </p>
             </div>
         </div>
